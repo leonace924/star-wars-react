@@ -1,26 +1,47 @@
-import React from 'react';
-import logo from './logo.svg';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { ApolloProvider } from '@apollo/client';
+import { ToastContainer } from 'react-toastify';
+
+import AppProvider from './context';
+import Characters from './pages/Characters';
+import Layout from './components/Layout';
+import { client } from './graphql';
+
+import 'react-toastify/dist/ReactToastify.css';
+import 'rc-pagination/assets/index.css';
 import './App.css';
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Characters />,
+  },
+]);
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <>
+      <AppProvider>
+        <ApolloProvider client={client}>
+          <Layout>
+            <RouterProvider router={router} />
+          </Layout>
+        </ApolloProvider>
+      </AppProvider>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
+    </>
+  )
 }
 
-export default App;
+export default App
